@@ -1,0 +1,18 @@
+# Global
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+
+# Logs
+*.log
+
+# Vite / React / Next
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+
+# Express / Node
+backend/node_modules/
+backend/.env
