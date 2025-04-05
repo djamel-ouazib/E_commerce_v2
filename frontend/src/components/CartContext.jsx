@@ -33,17 +33,22 @@ export function CartProvider({ children }) {
   );
 
   // Fonctions pour mettre à jour le panier (ajouter, modifier la quantité, supprimer)
-  const addToCart = (product) => {
-    setCartProducts((prev) => {
-      const exist = prev.find((p) => p._id === product._id);
-      if (exist) {
-        return prev.map((p) =>
-          p._id === product._id ? { ...p, quantity: p.quantity + 1 } : p
-        );
+  const addToCart = async (product) => {
+    try {
+      // Envoie la requête POST au backend
+      const response = await axios.post("http://localhost:3000/api/cart", product);
+  
+      if (response.status === 201) {
+        const savedProduct = response.data.cartItem;
+  
+        // Ajoute le produit retourné (avec l'_id correct) au state
+        setCartProducts((prev) => [...prev, { ...savedProduct, quantity: 1 }]);
       }
-      return [...prev, { ...product, quantity: 1 }];
-    });
+    } catch (error) {
+      console.error("Erreur lors de l'ajout au panier :", error);
+    }
   };
+  
 
   const updateQuantity = (id, newQuantity) => {
     setCartProducts((prev) =>
